@@ -58,10 +58,10 @@
         {
             int yearCap = date.Year + yCount;
 
-            // Для дебага
             Dictionary<string, DateTime> result = new Dictionary<string, DateTime>();
 
-            while (date.Year < yearCap)
+            //Включительно
+            while (date.Year <= yearCap)
             {
                 var key = date.ToString(format);
                 if (IsPalindrome(key) && result.ContainsKey(key) == false)
