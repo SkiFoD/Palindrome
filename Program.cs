@@ -1,27 +1,29 @@
 ﻿namespace Palindrome
 {
 
-    public class Program
+    public static class Program
     {
         public static void Main()
         {
             var dateStr = ReadDate();
 
-            var yearsStr = ReadYears();
-
             if (!DateTime.TryParse(dateStr, out var dateResult))
             {
                 Console.WriteLine("Неверный формат даты");
                 Console.WriteLine("===========================================================");
-                Console.ReadKey();
+                Console.WriteLine("Нажмите любую клавишу, чтобы выйти.");
+                Console.Read();
                 return;
             }
 
+            var yearsStr = ReadYears();
+            
             if (!Int32.TryParse(yearsStr, out var yearsResult))
             {
                 Console.WriteLine("Неверный формат кол-во лет");
                 Console.WriteLine("===========================================================");
-                Console.ReadKey();
+                Console.WriteLine("Нажмите любую клавишу, чтобы выйти.");
+                Console.Read();
                 return;
             }
 
@@ -45,7 +47,7 @@
 
         private static string ReadYears()
         {
-            Console.WriteLine("Введите кол-во лет");
+            Console.WriteLine("Введите кол-во лет.");
             Console.WriteLine("===========================================================");
             return Console.ReadLine();
         }
@@ -60,8 +62,7 @@
 
             Dictionary<string, DateTime> result = new Dictionary<string, DateTime>();
 
-            //Включительно
-            while (date.Year <= yearCap)
+            while (date.Year < yearCap)
             {
                 var key = date.ToString(format);
                 if (IsPalindrome(key) && result.ContainsKey(key) == false)
