@@ -5,33 +5,77 @@
     {
         public static void Main()
         {
-            var result = GetDates(new DateTime(2020, 1, 1), 102);
+            var dateStr = ReadDate();
+
+            var yearsStr = ReadYears();
+
+            if (!DateTime.TryParse(dateStr, out var dateResult))
+            {
+                Console.WriteLine("Неверный формат даты");
+                Console.WriteLine("===========================================================");
+                Console.ReadKey();
+                return;
+            }
+
+            if (!Int32.TryParse(yearsStr, out var yearsResult))
+            {
+                Console.WriteLine("Неверный формат кол-во лет");
+                Console.WriteLine("===========================================================");
+                Console.ReadKey();
+                return;
+            }
+
+            var result = GetDates(dateResult, yearsResult);
+
+            foreach (var r in result)
+            {
+                Console.WriteLine($"{r.Key} - {r.Value.ToString("dd/MM/yyyy")}");
+            }
+
+            Console.ReadKey();
         }
 
-        public static DateTime[] GetDates(DateTime date, int yCount)
+        private static string ReadDate()
+        {
+            Console.WriteLine("Введите дату в формате dd/MM/yyyy ,");
+            Console.WriteLine("где: dd текущий день, MM месяц в числовом формате, yyyy год");
+            Console.WriteLine("===========================================================");
+            return Console.ReadLine();
+        }
+
+        private static string ReadYears()
+        {
+            Console.WriteLine("Введите кол-во лет");
+            Console.WriteLine("===========================================================");
+            return Console.ReadLine();
+        }
+
+        public static DateTime[] GetDatesArray(DateTime date, int yCount)
+        {
+            return GetDates(date, yCount).Select(s => s.Value).ToArray();
+        }
+        public static Dictionary<string, DateTime> GetDates(DateTime date, int yCount, string format = "ddMMyyyy")
         {
             int yearCap = date.Year + yCount;
 
-            List<DateTime> result = new List<DateTime>();
-
             // Для дебага
-            //Dictionary<string, DateTime> dt = new Dictionary<string, DateTime>();
+            Dictionary<string, DateTime> result = new Dictionary<string, DateTime>();
 
             while (date.Year < yearCap)
             {
-                if (IsPalindrome(date.ToString("ddMMyyyy")))
+                var key = date.ToString(format);
+                if (IsPalindrome(key) && result.ContainsKey(key) == false)
                 {
-                    result.Add(date);
-                    // Для дебага
-                    //dt.Add(date.ToString("ddMMyyyy"), date);
-
+                    result.Add(date.ToString(key), date);
                 }
+
 
                 date = date.AddDays(1);
             }
 
-            return result.ToArray();
+            return result;
         }
+
 
         private static bool IsPalindrome(string s)
         {
